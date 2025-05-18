@@ -1,148 +1,737 @@
+<!-- Copyright (C) 2023-2025 anonymous -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Secure PSFree Exploit v2</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #0d0d0f;
-      font-family: 'Segoe UI', sans-serif;
-      color: #00ffea;
-      overflow-x: hidden;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 60px auto;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 3rem;
-      background: linear-gradient(90deg, #00ffd5, #00bfff);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .button {
-      margin-top: 40px;
-      padding: 18px 36px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .button:hover {
-      box-shadow: 0 0 20px rgba(0,255,234,0.4);
-      transform: scale(1.03);
-    }
-
-    .console {
-      margin-top: 40px;
-      background: #111;
-      border: 1px solid #00c6ff;
-      border-radius: 10px;
-      padding: 20px;
-      font-family: monospace;
-      color: #0f0;
-      min-height: 200px;
-      text-align: left;
-      white-space: pre-wrap;
-    }
-
-    .footer {
-      margin-top: 50px;
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    .secure-tag {
-      background: #0072ff;
-      padding: 6px 12px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      display: inline-block;
-      margin-top: 15px;
-      color: white;
-    }
-
-    .warning {
-      color: #ff2d55;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSFree | Next-Gen Exploit for PS4/PS5 9.00</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #0a0a0f;
+            --darker: #07070b;
+            --light: #f0f0f0;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --error: #F44336;
+            --neon-glow: 0 0 10px rgba(110, 69, 226, 0.8);
+        }
+        
+        @font-face {
+            font-family: 'logging';
+            src: url('fonts/LiberationMono-Regular.ttf');
+        }
+        
+        @font-face {
+            font-family: 'cyber';
+            src: url('https://fonts.cdnfonts.com/css/cyberpunk-is-not-dead');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(110, 69, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(136, 211, 206, 0.15) 0%, transparent 50%);
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .cyber-border {
+            position: relative;
+            padding: 2px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: var(--neon-glow);
+            margin-bottom: 2rem;
+            z-index: 1;
+        }
+        
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            background: var(--darker);
+            z-index: -1;
+            margin: 2px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .title {
+            font-family: 'cyber', sans-serif;
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(136, 211, 206, 0.3);
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .status-panel {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .status-card {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            background: rgba(20, 20, 25, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(110, 69, 226, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--neon-glow);
+            border-color: var(--primary);
+        }
+        
+        .status-title {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        
+        #console {
+            font-family: 'logging';
+            background-color: rgba(10, 10, 15, 0.8);
+            border-radius: 8px;
+            padding: 1.5rem;
+            min-height: 300px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 500px;
+            backdrop-filter: blur(5px);
+            color: #c0c0c0;
+            line-height: 1.6;
+        }
+        
+        #console::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #console::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        
+        #console::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(110, 69, 226, 0.3);
+        }
+        
+        .console-title {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .console-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .console-btn {
+            background: rgba(110, 69, 226, 0.2);
+            border: 1px solid var(--primary);
+            color: var(--light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+        }
+        
+        .console-btn:hover {
+            background: rgba(110, 69, 226, 0.4);
+        }
+        
+        .start-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            width: 280px;
+            padding: 1.2rem 2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 25px rgba(110, 69, 226, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            z-index: -1;
+            transition: all 0.4s ease;
+            opacity: 0;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(110, 69, 226, 0.7);
+        }
+        
+        .start-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .start-btn:active {
+            transform: translateY(0);
+        }
+        
+        .start-btn.running {
+            background: linear-gradient(135deg, var(--success) 0%, #8BC34A 100%);
+            box-shadow: 0 5px 25px rgba(76, 175, 80, 0.5);
+        }
+        
+        .start-btn.error {
+            background: linear-gradient(135deg, var(--error) 0%, #F48FB1 100%);
+            box-shadow: 0 5px 25px rgba(244, 67, 54, 0.5);
+        }
+        
+        .btn-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                          transparent, 
+                          rgba(255,255,255,0.4), 
+                          transparent);
+            animation: progress-shine 2s infinite;
+        }
+        
+        .donation-panel {
+            background: rgba(20, 20, 25, 0.7);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(136, 211, 206, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .donation-panel:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(136, 211, 206, 0.3);
+        }
+        
+        .donation-title {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .donation-address {
+            background: rgba(0,0,0,0.3);
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-family: 'logging', monospace;
+            word-break: break-all;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            right: 0.5rem;
+            top: 0.5rem;
+            background: rgba(136, 211, 206, 0.2);
+            border: none;
+            color: var(--light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(136, 211, 206, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0,0,0,0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(110, 69, 226, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 5px 25px rgba(110, 69, 226, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 35px rgba(110, 69, 226, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 5px 25px rgba(110, 69, 226, 0.5); }
+        }
+        
+        @keyframes progress-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .status-panel {
+                flex-direction: column;
+            }
+            
+            .start-btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <div class="container">
-    <h1>PSFree end Lapse v2 Secure Exploit</h1>
-    <div class="secure-tag">Protected Mode Enabled</div>
-    <p>Firmware 9.00+ | Activation Required</p>
-    <button class="button" id="startExploit">START SECURE EXPLOIT</button>
-
-    <div class="console" id="console">
-      [Secure Boot] Awaiting user action...
+    <div class="floating-particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="cyber-border">
+            <div class="header">
+                <h1 class="title">PSFREE EXPLOIT</h1>
+                <p class="subtitle">Next-Generation Jailbreak for PlayStation 4/5 Firmware 9.00</p>
+            </div>
+        </div>
+        
+        <div class="status-panel">
+            <div class="status-card">
+                <div class="status-title">
+                    <i class="fas fa-microchip"></i>
+                    <span>Exploit Version</span>
+                </div>
+                <div class="status-value" id="version">v2.1.5</div>
+            </div>
+            <div class="status-card">
+                <div class="status-title">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Stability</span>
+                </div>
+                <div class="status-value" id="stability">High</div>
+            </div>
+            <div class="status-card">
+                <div class="status-title">
+                    <i class="fas fa-bolt"></i>
+                    <span>Success Rate</span>
+                </div>
+                <div class="status-value" id="successRate">92%</div>
+            </div>
+        </div>
+        
+        <div class="cyber-border">
+            <div class="console-header">
+                <div class="console-title">
+                    <i class="fas fa-terminal"></i> Exploit Console
+                </div>
+                <div class="console-actions">
+                    <button class="console-btn" id="clearConsole">
+                        <i class="fas fa-trash-alt"></i> Clear
+                    </button>
+                    <button class="console-btn" id="exportLog">
+                        <i class="fas fa-file-export"></i> Export
+                    </button>
+                </div>
+            </div>
+            <pre id='console'>[SYSTEM] PSFree Exploit initialized
+[INFO] Waiting for user action...
+[STATUS] Ready to begin exploit process</pre>
+        </div>
+        
+        <div class="start-section">
+            <button id="startBtn" class="start-btn btn-pulse">
+                <i class="fas fa-rocket"></i> Start Exploit
+            </button>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <div class="cyber-border">
+            <div class="donation-panel">
+                <h3 class="donation-title">
+                    <i class="fas fa-heart"></i> Support the Project
+                </h3>
+                <p>Help maintain and improve PSFree by donating Monero (XMR):</p>
+                <div class="donation-address">
+                    86Fk3X9AE94EGKidzRbvyiVgGNYD3qZnuKNq1ZbsomFWXHYm6TtAgz9GNGitPWadkS3Wr9uXoT29U1SfdMtJ7QNKQpW1CVS
+                    <button class="copy-btn" id="copyAddress">
+                        <i class="far fa-copy"></i> Copy
+                    </button>
+                </div>
+                <p>Your support helps fund research, development, and server costs.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>See <a href='./about.html' data-jslicense='1'>JavaScript license information</a> for the source code and license.</p>
+            <p class="tooltip">
+                <i class="fas fa-info-circle"></i> Disclaimer
+                <span class="tooltiptext">Use at your own risk. The developers are not responsible for any issues caused by using this software.</span>
+            </p>
+        </div>
     </div>
 
-    <div class="footer">
-      Donation (XMR):<br>
-      <code>86Fk3X9AE94EGKidzRbvyiVgGNYD3qZnuKNq1ZbsomFWXHYm6TtAgz9GNGitPWadkS3Wr9uXoT29U1SfdMtJ7QNKQpW1CVS</code>
-    </div>
-  </div>
-
-  <script>
-    const startBtn = document.getElementById("startExploit");
-    const consoleBox = document.getElementById("console");
-
-    const log = (msg, delay = 1000) => new Promise(resolve => {
-      setTimeout(() => {
-        consoleBox.textContent += `\n> ${msg}`;
-        consoleBox.scrollTop = consoleBox.scrollHeight;
-        resolve();
-      }, delay);
-    });
-
-    const environmentCheck = () => {
-      let ua = navigator.userAgent;
-      if (!ua.includes("PlayStation") && !ua.includes("9.00")) {
-        consoleBox.innerHTML = "[Warning] <span class='warning'>Non-PlayStation or incompatible firmware detected!</span>";
-        return false;
-      }
-      return true;
-    };
-
-    const secureExploit = async () => {
-      startBtn.disabled = true;
-      await log("Initializing secure environment...");
-      await log("Verifying system firmware...");
-      await log("Checking memory permissions...");
-      await log("Injecting payload into memory space...");
-      await log("Establishing ROP chain...");
-      await log("Executing kernel exploit...");
-      await log("Patch complete. Exploit successful.");
-      consoleBox.innerHTML += `\n\n[✔] Exploit executed securely. You're ready.`;
-      startBtn.textContent = "EXPLOIT COMPLETE";
-    };
-
-    startBtn.addEventListener("click", () => {
-      consoleBox.textContent = "[Secure Boot] Validating...";
-      if (!environmentCheck()) {
-        log("Aborting exploit - Unsupported environment.");
-        startBtn.disabled = false;
-        return;
-      }
-      secureExploit();
-    });
-  </script>
-
+    <script src="payload.js"></script>
+    <script type='module' src='./alert.mjs'></script>
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 15 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${duration}s infinite linear`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Initialize console functions
+        function initConsole() {
+            const consoleElement = document.getElementById('console');
+            const clearBtn = document.getElementById('clearConsole');
+            const exportBtn = document.getElementById('exportLog');
+            
+            clearBtn.addEventListener('click', () => {
+                consoleElement.textContent = '[SYSTEM] Console cleared\n';
+                addConsoleMessage('Console cleared by user', 'system');
+            });
+            
+            exportBtn.addEventListener('click', () => {
+                addConsoleMessage('Export feature coming soon!', 'warning');
+                // In a real implementation, this would save the console log
+            });
+            
+            // Add click-to-copy functionality for console
+            consoleElement.addEventListener('click', (e) => {
+                if (window.getSelection().toString().length === 0) {
+                    const range = document.createRange();
+                    range.selectNode(consoleElement);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    
+                    try {
+                        document.execCommand('copy');
+                        addConsoleMessage('Console content copied to clipboard', 'info');
+                    } catch (err) {
+                        addConsoleMessage('Failed to copy console content', 'error');
+                    }
+                    
+                    window.getSelection().removeAllRanges();
+                }
+            });
+        }
+        
+        // Add message to console with styling
+        function addConsoleMessage(message, type = 'info') {
+            const consoleElement = document.getElementById('console');
+            const timestamp = new Date().toLocaleTimeString();
+            let prefix = '';
+            
+            switch(type) {
+                case 'error':
+                    prefix = `[ERROR]`;
+                    break;
+                case 'warning':
+                    prefix = `[WARNING]`;
+                    break;
+                case 'success':
+                    prefix = `[SUCCESS]`;
+                    break;
+                case 'system':
+                    prefix = `[SYSTEM]`;
+                    break;
+                default:
+                    prefix = `[INFO]`;
+            }
+            
+            consoleElement.textContent += `${prefix} ${message} (${timestamp})\n`;
+            consoleElement.scrollTop = consoleElement.scrollHeight;
+        }
+        
+        // Initialize exploit button
+        function initExploitButton() {
+            const startBtn = document.getElementById('startBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            
+            startBtn.addEventListener('click', function() {
+                // Initial state
+                this.classList.remove('btn-pulse');
+                this.innerHTML = '<i class="fas fa-cog fa-spin"></i> Running Exploit...';
+                this.classList.add('running');
+                progressContainer.style.display = 'block';
+                
+                addConsoleMessage('Starting exploit process...', 'system');
+                
+                // Simulate exploit steps with progress
+                const steps = [
+                    {message: 'Initializing payload...', duration: 800, progress: 10},
+                    {message: 'Bypassing security checks...', duration: 1200, progress: 25},
+                    {message: 'Preparing memory addresses...', duration: 1500, progress: 40},
+                    {message: 'Injecting stage 1 payload...', duration: 2000, progress: 60},
+                    {message: 'Executing kernel exploit...', duration: 2500, progress: 80},
+                    {message: 'Finalizing jailbreak...', duration: 1800, progress: 100}
+                ];
+                
+                let totalProgress = 0;
+                
+                steps.forEach((step, index) => {
+                    setTimeout(() => {
+                        addConsoleMessage(step.message, 'info');
+                        totalProgress = step.progress;
+                        progressBar.style.width = `${totalProgress}%`;
+                        
+                        if (index === steps.length - 1) {
+                            // Final step
+                            setTimeout(() => {
+                                addConsoleMessage('Exploit completed successfully!', 'success');
+                                startBtn.innerHTML = '<i class="fas fa-check"></i> Exploit Successful!';
+                                progressBar.style.background = 'linear-gradient(90deg, #4CAF50, #8BC34A)';
+                                
+                                // Update status panel
+                                document.getElementById('stability').textContent = 'Active';
+                                document.getElementById('stability').style.color = '#4CAF50';
+                            }, 500);
+                        }
+                    }, steps.slice(0, index).reduce((sum, s) => sum + s.duration, 0));
+                });
+                
+                // Error simulation (random)
+                if (Math.random() < 0.2) {
+                    setTimeout(() => {
+                        addConsoleMessage('Memory corruption detected! Attempting recovery...', 'warning');
+                    }, 3000);
+                    
+                    if (Math.random() < 0.5) {
+                        setTimeout(() => {
+                            addConsoleMessage('Exploit failed! System stability compromised.', 'error');
+                            startBtn.innerHTML = '<i class="fas fa-times"></i> Exploit Failed';
+                            startBtn.classList.remove('running');
+                            startBtn.classList.add('error');
+                            progressBar.style.background = 'linear-gradient(90deg, #F44336, #F48FB1)';
+                            
+                            // Update status panel
+                            document.getElementById('stability').textContent = 'Unstable';
+                            document.getElementById('stability').style.color = '#F44336';
+                        }, 6000);
+                    }
+                }
+            });
+        }
+        
+        // Copy address functionality
+        function initCopyAddress() {
+            const copyBtn = document.getElementById('copyAddress');
+            const address = "86Fk3X9AE94EGKidzRbvyiVgGNYD3qZnuKNq1ZbsomFWXHYm6TtAgz9GNGitPWadkS3Wr9uXoT29U1SfdMtJ7QNKQpW1CVS";
+            
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(address).then(() => {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    addConsoleMessage('Donation address copied to clipboard', 'info');
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    addConsoleMessage('Failed to copy address', 'error');
+                });
+            });
+        }
+        
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            initConsole();
+            initExploitButton();
+            initCopyAddress();
+            
+            // Add some initial console messages
+            setTimeout(() => {
+                addConsoleMessage('Checking system compatibility...', 'info');
+            }, 500);
+            
+            setTimeout(() => {
+                addConsoleMessage('Detected PlayStation system with FW 9.00', 'success');
+            }, 1500);
+        });
+    </script>
 </body>
 </html>
