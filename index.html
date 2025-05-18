@@ -1,165 +1,182 @@
-<html>
-    <head>
-        <meta charset='utf-8'>
-        <title>PSFree-Lapse Exploit For 9.00</title>
-        <style>
-            @font-face {
-                font-family: 'logging';
-                src: url('LiberationMono-Regular.ttf');
-            }
-            body {
-                background-color: #0f0f12;
-                color: #e0e0e0;
-                font-family: 'Segoe UI', Arial, sans-serif;
-                max-width: 900px;
-                margin: 0 auto;
-                padding: 20px;
-                line-height: 1.6;
-            }
-            .header {
-                text-align: center;
-                margin-bottom: 30px;
-            }
-            .title {
-                font-size: 2.5rem;
-                background: linear-gradient(90deg, #6e45e2, #88d3ce);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                margin-bottom: 10px;
-            }
-            .subtitle {
-                color: #88d3ce;
-                font-size: 1.1rem;
-                margin-bottom: 20px;
-            }
-            #console {
-                font-family: 'logging';
-                background-color: #1a1a1f;
-                border-radius: 8px;
-                padding: 20px;
-                min-height: 200px;
-                border-left: 4px solid #6e45e2;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-                margin-bottom: 30px;
-                white-space: pre-wrap;
-                overflow-y: auto;
-                max-height: 400px;
-            }
-            .start-btn {
-                display: block;
-                width: 200px;
-                margin: 0 auto 30px;
-                padding: 15px 25px;
-                font-size: 1.2rem;
-                font-weight: bold;
-                color: white;
-                background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
-                border: none;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(110, 69, 226, 0.4);
-                position: relative;
-                overflow: hidden;
-            }
-            .start-btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 6px 20px rgba(110, 69, 226, 0.6);
-            }
-            .start-btn:active {
-                transform: translateY(1px);
-            }
-            .start-btn::after {
-                content: '';
-                position: absolute;
-                top: -50%;
-                left: -60%;
-                width: 200%;
-                height: 200%;
-                background: rgba(255, 255, 255, 0.1);
-                transform: rotate(30deg);
-                transition: all 0.3s ease;
-            }
-            .start-btn:hover::after {
-                left: 100%;
-            }
-            .donation {
-                background-color: #1a1a1f;
-                padding: 15px;
-                border-radius: 8px;
-                text-align: center;
-                margin-bottom: 20px;
-                border-left: 4px solid #88d3ce;
-            }
-            .donation-title {
-                color: #88d3ce;
-                margin-top: 0;
-            }
-            a {
-                color: #6e45e2;
-                text-decoration: none;
-                transition: color 0.3s ease;
-            }
-            a:hover {
-                color: #88d3ce;
-                text-decoration: underline;
-            }
-            .footer {
-                text-align: center;
-                margin-top: 30px;
-                color: #666;
-                font-size: 0.9rem;
-            }
-            @keyframes pulse {
-                0% { box-shadow: 0 0 0 0 rgba(110, 69, 226, 0.7); }
-                70% { box-shadow: 0 0 0 10px rgba(110, 69, 226, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(110, 69, 226, 0); }
-            }
-            .pulse {
-                animation: pulse 2s infinite;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <div class="title">PSFree Exploit Chain</div>
-            <div class="subtitle">For PS4/PS5 Firmware 9.00</div>
-        </div>
-        
-        <button id="startBtn" class="start-btn pulse">START EXPLOIT</button>
-        
-        <div class="donation">
-            <h3 class="donation-title">Support the Project</h3>
-            Donation (Monero/XMR):<br>
-            86Fk3X9AE94EGKidzRbvyiVgGNYD3qZnuKNq1ZbsomFWXHYm6TtAgz9GNGitPWadkS3Wr9uXoT29U1SfdMtJ7QNKQpW1CVS
-        </div>
-        
-        <pre id='console'>Waiting for exploit initialization...</pre>
-        
-        <div class="footer">
-            See <a href='about.html' data-jslicense='1'>JavaScript license information</a> for the
-            source code and license.
-        </div>
-    </body>
-    <script src="payload.js"></script>
-    <script type='module' src="alert.mjs"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSFree-Lapse Exploit For 9.00</title>
+    <style>
+        body {
+            background-color: #0f0f12;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #6e45e2, #88d3ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #88d3ce;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        #console {
+            font-family: monospace;
+            background-color: #1a1a1f;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            border-left: 4px solid #6e45e2;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .start-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto 30px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(110, 69, 226, 0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(1px);
+        }
+
+        .start-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover::after {
+            left: 100%;
+        }
+
+        .donation {
+            background-color: #1a1a1f;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-left: 4px solid #88d3ce;
+        }
+
+        .donation-title {
+            color: #88d3ce;
+            margin-top: 0;
+        }
+
+        a {
+            color: #6e45e2;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #88d3ce;
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(110, 69, 226, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(110, 69, 226, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(110, 69, 226, 0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">PSFree Exploit Chain</div>
+        <div class="subtitle">For PS4/PS5 Firmware 9.00</div>
+    </div>
+
+    <button id="startBtn" class="start-btn pulse">START EXPLOIT</button>
+
+    <div class="donation">
+        <h3 class="donation-title">Support the Project</h3>
+        Donation (Monero/XMR):<br>
+        86Fk3X9AE94EGKidzRbvyiVgGNYD3qZnuKNq1ZbsomFWXHYm6TtAgz9GNGitPWadkS3Wr9uXoT29U1SfdMtJ7QNKQpW1CVS
+    </div>
+
+    <pre id='console'>Waiting for exploit initialization...</pre>
+
+    <div class="footer">
+        See <a href='#'>JavaScript license information</a> for the source code and license.
+    </div>
+
     <script>
-        document.getElementById('startBtn').addEventListener('click', function() {
+        document.getElementById('startBtn').addEventListener('click', function () {
             const consoleElement = document.getElementById('console');
             consoleElement.textContent = 'Starting exploit process...\n';
+
+            // Simulação do exploit
             setTimeout(() => {
                 consoleElement.textContent += '> Loading payload...\n';
             }, 800);
+
             setTimeout(() => {
                 consoleElement.textContent += '> Preparing memory...\n';
             }, 1600);
+
             setTimeout(() => {
                 consoleElement.textContent += '> Executing exploit chain...\n';
             }, 2400);
+
+            // Atualiza botão
             this.classList.remove('pulse');
             this.textContent = 'RUNNING...';
             this.style.background = 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)';
         });
     </script>
+</body>
 </html>
